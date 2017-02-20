@@ -7,13 +7,10 @@ services:
       - "8080:8080"
     volumes:
       - "/var/run/docker.sock:/var/run/docker.sock"
-    volumes_from:
-      - jenkins_data
+      -  /srv/redmine:/var/jenkins_home
     environment:
       http_proxy: "${http_proxy}"
     volumes:
-      -  /srv/redmine:/var/jenkins_home
-
   gitlab:
     image: 'gitlab/gitlab-ce:latest'
     restart: always
