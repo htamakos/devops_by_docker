@@ -1,4 +1,4 @@
-version: '2'
+version: "2"
 services:
   jenkins:
     container_name: my_jenkins
@@ -9,30 +9,29 @@ services:
       - "/var/run/docker.sock:/var/run/docker.sock"
     volumes_from:
       - jenkins_data
-  jenkins_data:
-    container_name: my_jenkins_data
-    image: devopsbydocker_jenkins
+    environment:
+      http_proxy: "${http_proxy}"
+    volumes:
+      -  /srv/redmine:/var/jenkins_home
+
   gitlab:
     image: 'gitlab/gitlab-ce:latest'
     restart: always
+    ports:
+      - "8081:80"
+      - "8084:443"
     environment:
       http_proxy: "${http_proxy}"
       GITLAB_OMNIBUS_CONFIG: |
         gitlab_rails['db_encoding'] = 'utf8'
-        gitlab_rails['db_host'] = '127.0.0.1'
-        gitlab_rails['db_port'] = '3306'
         gitlab_rails['db_username'] = 'gitlab'
         gitlab_rails['db_password'] = 'Welcome#1'
         unicorn['worker_processes'] = 10
         unicorn['worker_timeout'] = 120
-    ports:
-      - '8081:80'
-      - '8084:443'
-    volumes_from:
-      - gitlab_data
-  gitlab_data:
-    container_name: my_gitlab_data
-    image: 'gitlab/gitlab-ce:latest'
+    volumes:
+      - '/srv/gitlab/config:/etc/gitlab'
+      - '/srv/gitlab/logs:/var/log/gitlab'
+      - '/srv/gitlab/data:/var/opt/gitlab'
   redmine:
     container_name: my_redmine
     image: redmine:3.3.2
@@ -45,20 +44,19 @@ services:
       - redmine-mysql
     environment:
       http_proxy: "${http_proxy}"
-      MYSQL_ROOT_PASSWORD: Welcome#1
-      REDMINE_DB_MYSQL: redmine-mysql
-    volumes_from:
-      - redmine_data
-  redmine_data:
-    container_name: my_redmine_data
-    image: redmine:3.3.2
+      REDMINE_DB_PASSWORD: Welcome#1
+      REDMINE_DB_MYSQL: "redmine-mysql"
+    volumes:
+      - /srv/docker/redmine/redmine:/home/redmine/data
   redmine-mysql:
     container_name: my_redmine_mysql
     image: mysql:5.7.17
     restart: always
     environment:
+      http_proxy: "${http_proxy}"
       MYSQL_ROOT_PASSWORD: Welcome#1
-      MYSQL_DATABASE: redmine
-  redmine-mysql-data:
-    container_name: my_redmine_mysql_data
-    image: redmine:3.3.2
+      MYSQL_DATABASE: redmine-mysql
+      MYSQL_USER: redmine
+      MYSQL_PASSWORD: Welcome#1
+    volumes:
+      - /srv/docker/redmine/mysql:/var/lib/mysql
