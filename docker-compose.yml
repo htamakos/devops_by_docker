@@ -28,16 +28,16 @@ services:
       - "/srv/docker/gitlab/config:/etc/gitlab"
       - "/srv/docker/gitlab/logs:/var/log/gitlab"
       - "/srv/docker/gitlab/data:/var/opt/gitlab"
-  redmine-mysql:
+  redmine_mysql:
     container_name: my_redmine_mysql
     image: mysql:5.7.17
     restart: always
     environment:
       http_proxy: "${http_proxy}"
-      MYSQL_ROOT_PASSWORD: Welcome#1
-      MYSQL_DATABASE: redmine-mysql
-      MYSQL_USER: redmine
-      MYSQL_PASSWORD: Welcome#1
+      MYSQL_ROOT_PASSWORD: "Welcome#1"
+      MYSQL_DATABASE: "redmine_mysql"
+      MYSQL_USER: "redmine"
+      MYSQL_PASSWORD: "Welcome#1"
     volumes:
       - "/srv/docker/redmine/mysql:/var/lib/mysql"
   redmine:
@@ -47,12 +47,12 @@ services:
     ports:
       - "8082:3000"
     links:
-      - redmine-mysql:mysql
+      - redmine_mysql:mysql
     depends_on:
-      - redmine-mysql
+      - redmine_mysql
     environment:
       http_proxy: "${http_proxy}"
-      REDMINE_DB_PASSWORD: Welcome#1
-      REDMINE_DB_MYSQL: "redmine-mysql"
+      REDMINE_DB_PASSWORD: "Welcome#1"
+      REDMINE_DB_MYSQL: "redmine_mysql"
     volumes:
       - /srv/docker/redmine/redmine:/home/redmine/data
