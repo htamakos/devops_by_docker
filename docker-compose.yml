@@ -7,7 +7,7 @@ services:
       - "8080:8080"
     volumes:
       - "/var/run/docker.sock:/var/run/docker.sock"
-      - "/srv/redmine:/var/jenkins_home"
+      - "/srv/docker/jenkis:/var/jenkins_home"
     environment:
       http_proxy: "${http_proxy}"
   gitlab:
@@ -25,9 +25,9 @@ services:
         unicorn['worker_processes'] = 10
         unicorn['worker_timeout'] = 120
     volumes:
-      - "/srv/gitlab/config:/etc/gitlab"
-      - "/srv/gitlab/logs:/var/log/gitlab"
-      - "/srv/gitlab/data:/var/opt/gitlab"
+      - "/srv/docker/gitlab/config:/etc/gitlab"
+      - "/srv/docker/gitlab/logs:/var/log/gitlab"
+      - "/srv/docker/gitlab/data:/var/opt/gitlab"
   redmine:
     container_name: my_redmine
     image: redmine:3.3.2
