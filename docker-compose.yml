@@ -12,16 +12,34 @@ services:
   jenkins_data:
     container_name: my_jenkins_data
     image: devopsbydocker_jenkins
+
   gitlab:
-    image: gitlab/gitlab-ce:latest
     restart: always
-    ports:
-      - '8081:80'
-      - '4443:443'
-    volumes:
-      - '/srv/gitlab/config:/etc/gitlab'
-      - '/srv/gitlab/logs:/var/log/gitlab'
-      - '/srv/gitlab/data:/var/opt/gitlab'
+    image: sameersbn/gitlab:8.16.4
+    links:
+      - gitlab-redis:redisio
+      - gitlab-mysql:mysql
+    environment:
+      - http_proxy: "${http_proxy}"
+      - DEBUG=false
+      - TZ=Asia/Tokyo
+      - GITLAB_TIMEZONE=Tokyo
+      - GITLAB_SECRETS_DB_KEY_BASE=long-and-random-alphanumeric-string
+      - GITLAB_NOTIFY_ON_BROKEN_BUILDS=true
+      - GITLAB_EMAIL=hironori.tamakoshi@oracle.com
+      - GITLAB_EMAIL_REPLY_TO=noreply@example.com
+      - GITLAB_INCOMING_EMAIL_ADDRESS=reply@example.com
+  gitlab-mysql:
+    restart: always
+    image: sameersbn/mysql:latest
+    environment:
+      - DB_USER=gitlab
+      - DB_PASS=Welcome#1
+      - DB_NAME=gitlabhq_production
+  gitlab-redis:
+    restart: always
+    image: sameersbn/redis:latest
+
   redmine:
     container_name: my_redmine
     image: redmine:3.3.2
@@ -41,7 +59,6 @@ services:
   redmine_data:
     container_name: my_redmine_data
     image: redmine:3.3.2
-
   redmine-mysql:
     container_name: my_redmine_mysql
     image: mysql:5.7.17
