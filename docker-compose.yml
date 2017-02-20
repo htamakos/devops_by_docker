@@ -1,6 +1,7 @@
 version: '2'
 services:
   jenkins:
+    container_name: my_jenkins
     build: ./services/jenkins/
     ports:
       - "8080:8080"
@@ -9,6 +10,7 @@ services:
     volumes_from:
       - jenkins_data
   jenkins_data:
+    container_name: my_jenkins_data
     image: devopsbydocker_jenkins
   gitlab:
     image: gitlab/gitlab-ce:latest
@@ -21,20 +23,32 @@ services:
       - '/srv/gitlab/logs:/var/log/gitlab'
       - '/srv/gitlab/data:/var/opt/gitlab'
   redmine:
+    container_name: my_redmine
     image: redmine:3.3.2
     restart: always
     ports:
       - "8082:3000"
-    link:
+    links:
       - redmine-mysql:mysql 
     depends_on:
       - redmine-mysql
     environment:
+      http_proxy: "${http_proxy}"
       MYSQL_ROOT_PASSWORD: Welcome#1
-      MYSQL_DATABASE: redmine
+      REDMINE_DB_MYSQL: redmine-mysql
+    volumes_from:
+      - redmine-data
+  redmine_data:
+    container_name: my_redmine_data
+    image: redmine:3.3.2
+
   redmine-mysql:
+    container_name: my_redmine_mysql
     image: mysql:5.7.17
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD: Welcome#1
       MYSQL_DATABASE: redmine
+  redmine-mysql-data:
+    container_name: my_redmine_mysql_data
+    image: redmine:3.3.2
