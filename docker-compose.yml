@@ -1,0 +1,35 @@
+version: '2'
+services:
+  jenkins:
+    build: ./services/jenkins/
+    ports:
+      - "8080:8080"
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock"
+    volumes_from:
+      - jenkins_data
+  jenkins_data:
+    image: devopsbydocker_jenkins
+  gitlab:
+    image: gitlab/gitlab-ce:latest
+    restart: always
+    ports:
+      - '8081:80'
+      - '4443:443'
+    volumes:
+      - '/srv/gitlab/config:/etc/gitlab'
+      - '/srv/gitlab/logs:/var/log/gitlab'
+      - '/srv/gitlab/data:/var/opt/gitlab'
+  redmine:
+    image: redmine:3.3.2
+    restart: always
+    ports:
+      - "8082:3000"
+    depends_on:
+      - redmine-mysql
+  redmine-mysql:
+    image: mysql:5.7.17
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: Welcome#1
+      MYSQL_DATABASE: redmine
