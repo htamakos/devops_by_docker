@@ -57,3 +57,12 @@ services:
       REDMINE_DB_DATABASE: "redmine"
     volumes:
       - /srv/docker/redmine/redmine:/home/redmine/data
+
+  nginx:
+    buildd: nginx
+    links:
+      - jenkins:jenkins
+      - redmine:redmine
+      - gitlab:gitlab
+    ports: 80:80
+ 

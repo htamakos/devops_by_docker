@@ -1,5 +1,0 @@
-scm-api:2.0.5
-git:3.0.5
-gitlab-plugin:1.4.5
-redmine:0.20
-git-client:2.2.1
