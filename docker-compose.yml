@@ -11,8 +11,7 @@ services:
     environment:
       http_proxy: "${http_proxy}"
   gitlab:
-    container_name: my_gitlab
-    image: gitlab/gitlab-ce:latest
+    image: 'gitlab/gitlab-ce:latest'
     restart: always
     ports:
       - "8081:80"
@@ -58,12 +57,3 @@ services:
       REDMINE_DB_DATABASE: "redmine"
     volumes:
       - /srv/docker/redmine/redmine:/home/redmine/data
-
-  nginx:
-    build: ./services/nginx
-    links:
-      - jenkins:jenkins
-      - redmine:redmine
-      - gitlab:gitlab
-    ports:
-      - 80:80
