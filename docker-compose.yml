@@ -12,7 +12,7 @@ services:
       http_proxy: "${http_proxy}"
   gitlab:
     container_name: my_gitlab
-    build: ./services/gitlab/
+    image: gitlab/gitlab-ce:latest
     restart: always
     ports:
       - "8081:80"
