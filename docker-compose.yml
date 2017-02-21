@@ -59,10 +59,9 @@ services:
       - /srv/docker/redmine/redmine:/home/redmine/data
 
   nginx:
-    buildd: nginx
+    build: ./services/nginx
     links:
       - jenkins:jenkins
       - redmine:redmine
       - gitlab:gitlab
     ports: 80:80
- 
