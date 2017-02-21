@@ -64,4 +64,5 @@ services:
       - jenkins:jenkins
       - redmine:redmine
       - gitlab:gitlab
-    ports: 80:80
+    ports:
+      - 80:80
