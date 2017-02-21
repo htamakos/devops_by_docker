@@ -7,7 +7,7 @@ services:
       - "8080:8080"
     volumes:
       - "/var/run/docker.sock:/var/run/docker.sock"
-      - "/srv/docker/jenkis:/var/jenkins_home"
+      - "/srv/docker/jenkins:/var/jenkins_home"
     environment:
       http_proxy: "${http_proxy}"
   gitlab:
@@ -35,7 +35,7 @@ services:
     environment:
       http_proxy: "${http_proxy}"
       MYSQL_ROOT_PASSWORD: "Welcome#1"
-      MYSQL_DATABASE: "redmine_mysql"
+      MYSQL_DATABASE: "redmine"
       MYSQL_USER: "redmine"
       MYSQL_PASSWORD: "Welcome#1"
     volumes:
@@ -53,6 +53,7 @@ services:
     environment:
       http_proxy: "${http_proxy}"
       REDMINE_DB_PASSWORD: "Welcome#1"
-      REDMINE_DB_MYSQL: "redmine_mysql"
+      REDMINE_DB_MYSQL: "mysql"
+      REDMINE_DB_DATABASE: "redmine_mysql"
     volumes:
       - /srv/docker/redmine/redmine:/home/redmine/data
