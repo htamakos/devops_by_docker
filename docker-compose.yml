@@ -54,6 +54,6 @@ services:
       http_proxy: "${http_proxy}"
       REDMINE_DB_PASSWORD: "Welcome#1"
       REDMINE_DB_MYSQL: "mysql"
-      REDMINE_DB_DATABASE: "redmine_mysql"
+      REDMINE_DB_DATABASE: "redmine"
     volumes:
       - /srv/docker/redmine/redmine:/home/redmine/data
