@@ -11,8 +11,8 @@ services:
     environment:
       http_proxy: "${http_proxy}"
       JAVA_OPTS: |
-         Dhttp.proxyHost="jp-proxy.jp.oracle.com"
-         Dhttp.proxyPort=80
+         -Dhttp.proxyHost="jp-proxy.jp.oracle.com"
+         -Dhttp.proxyPort=80
   gitlab:
     image: 'gitlab/gitlab-ce:latest'
     restart: always
