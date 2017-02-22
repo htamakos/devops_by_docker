@@ -60,3 +60,17 @@ services:
       REDMINE_DB_DATABASE: "redmine"
     volumes:
       - /srv/docker/redmine/redmine:/home/redmine/data
+  rocketchat:
+    image: rocketchat/rocket.chat
+    environment:
+      - MONGO_URL=mongodb://mongodb/rocketchat
+      - ROOT_URL=http://localhost:80
+    links:
+      - mongodb
+    ports:
+      - 8085:80
+
+  mongodb:
+     image: mongo
+     ports:
+       - 27017
