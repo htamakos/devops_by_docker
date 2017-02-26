@@ -10,6 +10,8 @@ services:
       - /srv/docker/jenkins:/var/jenkins_home
     environment:
       http_proxy: "${http_proxy}"
+      JENKINS_OPTS: |
+        --prefix=/jenkins
   gitlab:
     image: 'gitlab/gitlab-ce:latest'
     restart: always
