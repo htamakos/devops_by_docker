@@ -73,7 +73,7 @@ services:
       - /srv/docker/rocketchat/mongodb:/data/db
 
   proxy:
-    image: jwilder/nginx-proxy
+    build: ./services/nginx
     ports:
       - 80:80
     volumes:
