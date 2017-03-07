@@ -10,7 +10,7 @@ RUN apt-get update \
    $(lsb_release -cs) \
    stable" \
       && apt-get update \
-      && apt-get install docker-ce
+      && apt-get install -y docker-ce
 
 RUN echo "jenkins ALL=NOPASSWD: ALL" >> /etc/sudoers
 

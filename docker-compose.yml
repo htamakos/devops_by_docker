@@ -2,7 +2,10 @@ version: "2"
 services:
   jenkins:
     container_name: my_jenkins
-    build: ./services/jenkins/
+    build:
+      context: ./services/jenkins/
+      http_proxy: "${http_proxy}"
+      https_proxy: "${http_proxy}"      
     ports:
       - 8080:8080
     volumes:
