@@ -22,6 +22,7 @@ services:
       - 8081:80
     environment:
       http_proxy: "${http_proxy}"
+      GITLAB_RELATIVE_URL_ROOT: /gitlab
       GITLAB_OMNIBUS_CONFIG: |
         gitlab_rails['db_encoding'] = 'utf8'
         gitlab_rails['db_username'] = 'gitlab'
@@ -56,6 +57,7 @@ services:
       - redmine_mysql
     environment:
       http_proxy: "${http_proxy}"
+      REDMINE_RELATIVE_URL_ROOT: /redmine
       REDMINE_DB_PASSWORD: "Welcome#1"
       REDMINE_DB_MYSQL: "mysql"
       REDMINE_DB_DATABASE: "redmine"
@@ -81,7 +83,7 @@ services:
     ports:
       - 80:80
     links:
-      - jenkis:jenkins
+      - jenkins:jenkins
       - redmine:redmine
       - gitlab:gitlab
       - rocketchat:rocketchat
