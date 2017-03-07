@@ -10,6 +10,9 @@ services:
       - /srv/docker/jenkins:/var/jenkins_home
     environment:
       http_proxy: "${http_proxy}"
+      JAVA_OPTS: |
+         -Dhttp.proxyHost="${http_proxy_host}"
+         -Dhttp.proxyPort="${http_proxy_port}"
       JENKINS_OPTS: |
         --prefix=/jenkins
   gitlab:
@@ -73,10 +76,14 @@ services:
        - 27017
     volumes:
       - /srv/docker/rocketchat/mongodb:/data/db
-
-  proxy:
+  nginx:
     build: ./services/nginx
     ports:
       - 80:80
+    links:
+      - jenkis:jenkins
+      - redmine:redmine
+      - gitlab:gitlab
+      - rocketchat:rocketchat
     volumes:
       - /var/run/docker.sock:/tmp/docker.sock:ro
