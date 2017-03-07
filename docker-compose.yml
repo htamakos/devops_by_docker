@@ -3,6 +3,8 @@ services:
   jenkins:
     container_name: my_jenkins
     build: ./services/jenkins/
+    args:
+      HTTP_PROXY: "${http_proxy}"
     ports:
       - 8080:8080
     volumes:
@@ -10,6 +12,7 @@ services:
       - /srv/docker/jenkins:/var/jenkins_home
     environment:
       http_proxy: "${http_proxy}"
+      https_proxy: "${http_proxy}"
       JAVA_OPTS: |
          -Dhttp.proxyHost="${http_proxy_host}"
          -Dhttp.proxyPort="${http_proxy_port}"
@@ -22,6 +25,7 @@ services:
       - 8081:80
     environment:
       http_proxy: "${http_proxy}"
+      https_proxy: "${http_proxy}"
       GITLAB_RELATIVE_URL_ROOT: /gitlab
       GITLAB_OMNIBUS_CONFIG: |
         gitlab_rails['db_encoding'] = 'utf8'
@@ -39,6 +43,7 @@ services:
     restart: always
     environment:
       http_proxy: "${http_proxy}"
+      https_proxy: "${http_proxy}"
       MYSQL_ROOT_PASSWORD: "Welcome#1"
       MYSQL_DATABASE: "redmine"
       MYSQL_USER: "redmine"
@@ -57,6 +62,7 @@ services:
       - redmine_mysql
     environment:
       http_proxy: "${http_proxy}"
+      https_proxy: "${http_proxy}"
       REDMINE_RELATIVE_URL_ROOT: /redmine
       REDMINE_DB_PASSWORD: "Welcome#1"
       REDMINE_DB_MYSQL: "mysql"
@@ -66,8 +72,10 @@ services:
   rocketchat:
     image: rocketchat/rocket.chat
     environment:
-      - MONGO_URL=mongodb://mongodb/rocketchat
-      - ROOT_URL=http://localhost:80
+      http_proxy: "${http_proxy}"
+      https_proxy: "${http_proxy}"
+      MONGO_URL: mongodb://mongodb/rocketchat
+      ROOT_URL: http://localhost:80
     links:
       - mongodb
     ports:
