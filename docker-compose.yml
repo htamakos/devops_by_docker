@@ -3,8 +3,6 @@ services:
   jenkins:
     container_name: my_jenkins
     build: ./services/jenkins/
-    args:
-      HTTP_PROXY: "${http_proxy}"
     ports:
       - 8080:8080
     volumes:
