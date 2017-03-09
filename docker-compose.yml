@@ -15,6 +15,10 @@ services:
     environment:
       http_proxy: "${http_proxy}"
       https_proxy: "${http_proxy}"
+      HTTP_PROXY: "${http_proxy}"
+      HTTPS_PROXY: "${http_proxy}"
+      no_proxy: "gitlab,jenkins,rocketchat,redmine"
+      NO_PROXY: "gitlab,jenkins,rocketchat,redmine"
       JAVA_OPTS: |
          -Dhttp.proxyHost="${http_proxy_host}"
          -Dhttp.proxyPort="${http_proxy_port}"
@@ -28,6 +32,10 @@ services:
     environment:
       http_proxy: "${http_proxy}"
       https_proxy: "${http_proxy}"
+      HTTP_PROXY: "${http_proxy}"
+      HTTPS_PROXY: "${http_proxy}"
+      no_proxy: "gitlab,jenkins,rocketchat,redmine"
+      NO_PROXY: "gitlab,jenkins,rocketchat,redmine"
       GITLAB_RELATIVE_URL_ROOT: /gitlab
       GITLAB_OMNIBUS_CONFIG: |
         gitlab_rails['db_encoding'] = 'utf8'
@@ -65,6 +73,10 @@ services:
     environment:
       http_proxy: "${http_proxy}"
       https_proxy: "${http_proxy}"
+      HTTP_PROXY: "${http_proxy}"
+      HTTPS_PROXY: "${http_proxy}"
+      no_proxy: "gitlab,jenkins,rocketchat,redmine"
+      NO_PROXY: "gitlab,jenkins,rocketchat,redmine"
       REDMINE_RELATIVE_URL_ROOT: /redmine
       REDMINE_DB_PASSWORD: "Welcome#1"
       REDMINE_DB_MYSQL: "mysql"
@@ -76,12 +88,15 @@ services:
     environment:
       http_proxy: "${http_proxy}"
       https_proxy: "${http_proxy}"
+      HTTP_PROXY: "${http_proxy}"
+      HTTPS_PROXY: "${http_proxy}"
+      no_proxy: "gitlab,jenkins,rocketchat,redmine"
+      NO_PROXY: "gitlab,jenkins,rocketchat,redmine"
       MONGO_URL: mongodb://mongodb/rocketchat
-      ROOT_URL: http://localhost:80
     links:
       - mongodb
     ports:
-      - 8083:80
+      - 8083:3000
   mongodb:
     image: mongo
     ports:
