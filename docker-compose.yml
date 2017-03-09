@@ -61,6 +61,10 @@ services:
     depends_on:
     - postgresql
     environment:
+      http_proxy: "${http_proxy}"
+      https_proxy: "${http_proxy}"
+      HTTP_PROXY: "${http_proxy}"
+      HTTPS_PROXY: "${http_proxy}"
       TZ: Asia/Kolkata
       DB_ADAPTER: postgresql
       DB_HOST: postgresql
@@ -68,10 +72,10 @@ services:
       DB_USER: redmine
       DB_PASS: password
       DB_NAME: redmine_production
-      REDMINE_HTTPS: false
+      REDMINE_HTTPS: "false"
       REDMINE_RELATIVE_URL_ROOT: /redmine
       REDMINE_SECRET_TOKEN:
-      REDMINE_SUDO_MODE_ENABLED: false
+      REDMINE_SUDO_MODE_ENABLED: "false"
       REDMINE_SUDO_MODE_TIMEOUT: 15
       REDMINE_CONCURRENT_UPLOADS: 2
       REDMINE_BACKUP_SCHEDULE: 
