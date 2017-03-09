@@ -38,6 +38,7 @@ services:
       NO_PROXY: "gitlab,jenkins,rocketchat,redmine"
       GITLAB_RELATIVE_URL_ROOT: /gitlab
       GITLAB_OMNIBUS_CONFIG: |
+        external_url 'http://localhost:80/gitlab'
         gitlab_rails['db_encoding'] = 'utf8'
         gitlab_rails['db_username'] = 'gitlab'
         gitlab_rails['db_password'] = 'Welcome#1'
@@ -48,28 +49,16 @@ services:
       - /srv/docker/gitlab/logs:/var/log/gitlab
       - /srv/docker/gitlab/data:/var/opt/gitlab
   redmine_mysql:
-    container_name: my_redmine_mysql
-    image: mysql:5.7.17
-    restart: always
+    image: sameersbn/mysql:latest
     environment:
-      http_proxy: "${http_proxy}"
-      https_proxy: "${http_proxy}"
-      MYSQL_ROOT_PASSWORD: "Welcome#1"
-      MYSQL_DATABASE: "redmine"
-      MYSQL_USER: "redmine"
-      MYSQL_PASSWORD: "Welcome#1"
+      DB_USER: redmine
+      DB_PASS: password
+      DB_NAME: redmine_production
     volumes:
       - /srv/docker/redmine/mysql:/var/lib/mysql
   redmine:
-    container_name: my_redmine
-    image: redmine:3.3.2
     restart: always
-    ports:
-      - 8082:3000
-    links:
-      - redmine_mysql:mysql
-    depends_on:
-      - redmine_mysql
+    image: sameersbn/redmine:latest
     environment:
       http_proxy: "${http_proxy}"
       https_proxy: "${http_proxy}"
@@ -77,10 +66,23 @@ services:
       HTTPS_PROXY: "${http_proxy}"
       no_proxy: "gitlab,jenkins,rocketchat,redmine"
       NO_PROXY: "gitlab,jenkins,rocketchat,redmine"
+      TZ: Asia/Tokyo
+      DB_ADAPTER: mysql2
+      DB_HOST: redmime_mysql
+      DB_PORT: 5432
+      DB_USER: redmine
+      DB_PASS: password
+      DB_NAME: redmine_production
+      REDMINE_PORT:
+      REDMINE_HTTPS: "false"
       REDMINE_RELATIVE_URL_ROOT: /redmine
-      REDMINE_DB_PASSWORD: "Welcome#1"
-      REDMINE_DB_MYSQL: "mysql"
-      REDMINE_DB_DATABASE: "redmine"
+      REDMINE_SECRET_TOKEN:
+      REDMINE_SUDO_MODE_ENABLED: "false"
+      REDMINE_SUDO_MODE_TIMEOUT: 15
+      REDMINE_CONCURRENT_UPLOADS: 2
+      REDMINE_BACKUP_SCHEDULE:
+      REDMINE_BACKUP_EXPIRY:
+      REDMINE_BACKUP_TIME:
     volumes:
       - /srv/docker/redmine/redmine:/home/redmine/data
   rocketchat:
@@ -92,6 +94,7 @@ services:
       HTTPS_PROXY: "${http_proxy}"
       no_proxy: "gitlab,jenkins,rocketchat,redmine"
       NO_PROXY: "gitlab,jenkins,rocketchat,redmine"
+      ROOT_URL: http://localhost:3000/rocketchat
       MONGO_URL: mongodb://mongodb/rocketchat
     links:
       - mongodb
